@@ -7,6 +7,7 @@ import Logout from './components/Logout'
 import BlogForm from './components/BlogForm'
 import ErrorMessage from './components/ErrorMessage'
 import SuccessMessage from './components/SuccessMessage'
+import Toggable from './components/Toggable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -90,7 +91,9 @@ const App = () => {
         null :
         <div>
           <h2>Create new blog</h2>
+          <Toggable buttonLabel='Add new blog'>
           <BlogForm setBlogs={setBlogs} blogs={blogs} setPos={setPos} setPosText={setPosText}/>
+          </Toggable>
         </div>
       }
 

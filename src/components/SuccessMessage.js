@@ -1,6 +1,6 @@
 import React from 'react'
 
-const SuccessMessage = ({text}) => {
+const SuccessMessage = ({ text }) => {
 
     const style = {
         border: '3px solid green',
@@ -9,14 +9,14 @@ const SuccessMessage = ({text}) => {
         color: 'green',
         padding: 10,
         margin: 10,
-    
-      }
 
-      return (
-          <div style={style}>
-              {text}
-          </div>
-      )
+    }
+
+    return (
+        <div style={style}>
+            {text}
+        </div>
+    )
 }
 
 export default SuccessMessage

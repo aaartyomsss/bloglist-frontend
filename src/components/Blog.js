@@ -43,7 +43,7 @@ const Blog = ({ blog, setBlogs, blogs }) => {
     return (
         <div style={blogStyle}>
             {blog.title} {blog.author} <button onClick={() => setVisibility(!showFull)}>{buttonText}</button><button onClick={handleLike}>Like</button>
-            <div style={show}>
+            <div style={show} className='notDisplayedByDefault'>
     url: {blog.url}<br/>
     Likes: {blog.likes}<br/>
                 <button onClick={handleDelete}>Delete blog</button>

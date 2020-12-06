@@ -11,22 +11,26 @@ const BlogFrom = ({ blogs, setBlogs, setPos, setPosText }) => {
     // Posting new blog
     const handlePosting = async (event) => {
         event.preventDefault()
-        const newBlog = {
-            title: title,
-            author: author,
-            url: url
+        try {
+            const newBlog = {
+                title: title,
+                author: author,
+                url: url
+            }
+            const response = await blogService.postBlog(newBlog)
+            setPosText('New blog has been successfully added!')
+            setPos(true)
+            setTimeout(() => {
+                setPos(null)
+                setPosText('')
+            }, 3000)
+            setBlogs(blogs.concat(response))
+            setAuthor('')
+            setTitle('')
+            setUrl('')
+        } catch (e) {
+            console.log(e.message)
         }
-        const response = await blogService.postBlog(newBlog)
-        setPosText('New blog has been successfully added!')
-        setPos(true)
-        setTimeout(() => {
-            setPos(null)
-            setPosText('')
-        }, 3000)
-        setBlogs(blogs.concat(response))
-        setAuthor('')
-        setTitle('')
-        setUrl('')
     }
 
 
@@ -62,7 +66,7 @@ const BlogFrom = ({ blogs, setBlogs, setPos, setPosText }) => {
                     onChange={({ target }) => setUrl(target.value)}
                 />
             </div>
-            <button type="submit">Create</button>
+            <button type="submit" id='addBlog'>Create</button>
         </form>
     )
 }

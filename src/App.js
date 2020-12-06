@@ -83,7 +83,7 @@ const App = () => {
             {showError === true ? <ErrorMessage text={errorText} /> : null}
             {showPos === true ? <SuccessMessage text={posText} /> : null}
             {user === null ?
-                <LoginForm username={username} setUsername={setUsername} password={password} setPassword={setPassword} handleLogin={handleLogin} /> :
+                <LoginForm username={username} setUsername={setUsername} password={password} setPassword={setPassword} handleLogin={handleLogin}/> :
                 <Logout username={user.username} setUser={setUser} />
             }
 
@@ -91,7 +91,7 @@ const App = () => {
                 null :
                 <div>
                     <h2>Create new blog</h2>
-                    <Toggable buttonLabel='Add new blog'>
+                    <Toggable buttonLabel='Add new blog' id='addNewBlog'>
                         <BlogForm setBlogs={setBlogs} blogs={blogs} setPos={setPos} setPosText={setPosText} />
                     </Toggable>
                 </div>
@@ -100,11 +100,12 @@ const App = () => {
             <h2>blogs</h2>
 
 
+            <div id='blogs'>
+            {blogs.map((blog, i) =>
 
-            {blogs.map(blog =>
-
-                <Blog key={blog.id} blog={blog} setBlogs={setBlogs} blogs={blogs} />
+                <Blog key={blog.id} blog={blog} setBlogs={setBlogs} blogs={blogs} i={i}/>
             )}
+            </div>
         </div>
     )
 }

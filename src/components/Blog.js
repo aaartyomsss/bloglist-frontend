@@ -3,7 +3,7 @@ import blogService from '../services/blogs'
 
 
 
-const Blog = ({ blog, setBlogs, blogs }) => {
+const Blog = ({ blog, setBlogs, blogs, i }) => {
 
     const [showFull, setVisibility] = useState(false)
     const show = { display: showFull ? '' : 'none' }
@@ -26,6 +26,7 @@ const Blog = ({ blog, setBlogs, blogs }) => {
         if (check) {
             const response = await blogService.deleteBlog(blogId)
             if (response.status === 204) {
+                setBlogs(blogs.filter(blog => blog.id !== blogId))
                 return response
             } else {
                 alert('You cannot delete this post')
@@ -41,12 +42,14 @@ const Blog = ({ blog, setBlogs, blogs }) => {
     }
 
     return (
-        <div style={blogStyle}>
-            {blog.title} {blog.author} <button onClick={() => setVisibility(!showFull)}>{buttonText}</button><button onClick={handleLike}>Like</button>
+        <div style={blogStyle} className='singleBlog'>
+            {i + 1}&nbsp;
+            <div className='blogTitle'>{blog.title}</div>
+            {blog.author} <button onClick={() => setVisibility(!showFull)} id='showHide'>{buttonText}</button><button onClick={handleLike} id='likeButton'>Like</button>
             <div style={show} className='notDisplayedByDefault'>
-    url: {blog.url}<br/>
-    Likes: {blog.likes}<br/>
-                <button onClick={handleDelete}>Delete blog</button>
+                <div>url: {blog.url}</div>
+                <div className='numOfLikes'>Likes: {blog.likes}</div>
+                <button onClick={handleDelete} id='deleteButton'>Delete blog</button>
             </div>
         </div>
     )

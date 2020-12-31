@@ -1,18 +1,15 @@
 import axios from 'axios'
 const baseUrl = 'http://localhost:3001/api/blogs'
 
-let token = null
-
-const setToken = newToken => {
-    token = `bearer ${newToken}`
+const getAll = async () => {
+    const response = await axios.get(baseUrl)
+    return response.data
 }
 
-const getAll = () => {
-    const request = axios.get(baseUrl)
-    return request.then(response => response.data)
-}
+const postBlog = async (newBlog, t) => {
 
-const postBlog = async newBlog => {
+    const token = `bearer ${t}`
+
     const config = {
         headers: { Authorization: token }
     }
@@ -21,18 +18,20 @@ const postBlog = async newBlog => {
     return response.data
 }
 
-const putBlog = async updateBlog => {
-    const url = `${baseUrl}/${updateBlog.id}`
-    const response = await axios.put(url, updateBlog)
+const putBlog = async updatedBlog => {
+    const url = `${baseUrl}/${updatedBlog.id}`
+    const response = await axios.put(url, updatedBlog)
     return response.data
 }
 
-const deleteBlog = async blogId => {
+const deleteBlog = async (blogId, t) => {
     const url = `${baseUrl}/${blogId}`
-
+    const token = `bearer ${t}`
     const config = {
         headers: { Authorization: token }
     }
+
+    console.log(config)
     try {
         const response = await axios.delete(url, config)
         return response
@@ -41,4 +40,4 @@ const deleteBlog = async blogId => {
     }
 }
 
-export default { getAll, postBlog, setToken, putBlog, deleteBlog }
+export default { getAll, postBlog, putBlog, deleteBlog }

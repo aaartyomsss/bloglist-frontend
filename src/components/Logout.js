@@ -1,15 +1,20 @@
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { logout } from '../reducers/userReducer'
 
-const Logout = ({ username, setUser }) => {
+const Logout = () => {
+
+    const dispatch = useDispatch()
+    const user = useSelector(state => state.user)
 
     const handleLogout = () => {
         window.localStorage.clear()
-        setUser(null)
+        dispatch(logout())
     }
 
     return (
         <div>
-            {username} logged in
+            {user.username} logged in
             <button onClick={handleLogout} id='logoutButton'>Logout</button>
         </div>
     )

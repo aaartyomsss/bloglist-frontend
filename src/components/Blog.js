@@ -1,32 +1,37 @@
 import React, { useState } from 'react'
 import blogService from '../services/blogs'
+import { useDispatch, useSelector } from 'react-redux'
+import { likeBlog, deleteBlog } from '../reducers/blogReducer'
 
 
 
-const Blog = ({ blog, setBlogs, blogs, i }) => {
+const Blog = ({ blog }) => {
+    const user = useSelector(state => state.user)
+    const dispatch = useDispatch()
 
     const [showFull, setVisibility] = useState(false)
     const show = { display: showFull ? '' : 'none' }
     const buttonText = showFull ? 'Hide' : 'Show'
 
     const handleLike = async () => {
-        const newBlog = {
-            ...blog
+        const likedBlog = {
+            ...blog,
+            likes: blog.likes + 1
         }
-        newBlog.likes = newBlog.likes + 1
-
-        const response = await blogService.putBlog(newBlog)
-        setBlogs(blogs.map(blog => blog.id !== newBlog.id ? blog : response).sort((b1, b2) => b2.likes - b1.likes))
+        dispatch(likeBlog(likedBlog))
     }
 
     const handleDelete = async () => {
         const blogId = blog.id
+        const token = user.token
+        console.log(token, blogId)
 
         let check = window.confirm('Are you sure that you want to delete this blog?')
         if (check) {
-            const response = await blogService.deleteBlog(blogId)
+            const response = await blogService.deleteBlog(blogId, token)
+            console.log(response)
             if (response.status === 204) {
-                setBlogs(blogs.filter(blog => blog.id !== blogId))
+                dispatch(deleteBlog(blogId))
                 return response
             } else {
                 alert('You cannot delete this post')
@@ -43,7 +48,6 @@ const Blog = ({ blog, setBlogs, blogs, i }) => {
 
     return (
         <div style={blogStyle} className='singleBlog'>
-            {i + 1}&nbsp;
             <div className='blogTitle'>{blog.title}</div>
             {blog.author} <button onClick={() => setVisibility(!showFull)} id='showHide'>{buttonText}</button><button onClick={handleLike} id='likeButton'>Like</button>
             <div style={show} className='notDisplayedByDefault'>
